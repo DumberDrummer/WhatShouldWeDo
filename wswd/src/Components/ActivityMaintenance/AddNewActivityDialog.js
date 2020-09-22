@@ -1,9 +1,13 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Select, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
-import typesList from '../../Shared/ActivityTypes'
+import typesList from '../../Shared/ActivityTypes';
 
 const AddNewActivityDialog = ({ createHandler, onClose, open }) => {
+    //#region Hooks
+    const [newActivityName, setNewActivityName] = useState('')
+    const [newActivityType, setNewActivityType] = useState(typesList[0])
+    //#endregion
 
     //#region MaterialUI
     const useStyles = makeStyles({
@@ -14,11 +18,6 @@ const AddNewActivityDialog = ({ createHandler, onClose, open }) => {
     const classes = useStyles()
     //#endregion
 
-    //#region Hooks
-    const [newActivityName, setNewActivityName] = useState('')
-    const [newActivityType, setNewActivityType] = useState(typesList[0])
-    //#endregion
-    
     //#region Event Handlers
     const handleCreateActivity = (event) => {
         event.preventDefault()
@@ -55,7 +54,7 @@ const AddNewActivityDialog = ({ createHandler, onClose, open }) => {
                                     value={newActivityType}
                                     onChange={handleTypeChange}
                                 >
-                                    {typesList.map((types, i) => {
+                                    {typesList.map((types) => {
                                         return (
                                             <MenuItem value={types}>{types}</MenuItem>
                                         )
@@ -76,13 +75,10 @@ const AddNewActivityDialog = ({ createHandler, onClose, open }) => {
                     onClick={handleCreateActivity}
                 >
                     Add
-          </Button>
+                </Button>
             </DialogActions>
         </Dialog>
-
-
     )
-
 }
 
 export default AddNewActivityDialog;

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://192.168.1.6:4000/api/activities'
+const baseUrl = 'https://localhost:8443/wswd/api/activities'
 
 const getAll = () => {
     const req = axios.get(baseUrl)
@@ -23,8 +23,4 @@ const remove = (id, delActivity) => {
         throw er.response.data
     })
 }
-
-
-
-
 export default { getAll, create, update, remove }

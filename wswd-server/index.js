@@ -1,8 +1,14 @@
 require('dotenv').config()
+var fs = require('fs');
+var http = require('http');
+
 const express = require("express");
 const router = express.Router()
 
 const app = express();
+
+const helmet = require('helmet');
+app.use(helmet());
 
 const cors = require("cors");
 app.use(cors());
@@ -23,12 +29,8 @@ let Activity = require("./model");
 
 app.use("/", router);
 
-
-app.listen(process.env.APP_PORT, () => {
-    console.log("Server is running on port: " + process.env.APP_PORT);
-});
-
-app.get('/api/activities/:id', (req, res) => {
+app.listen(process.env.APP_PORT)
+app.get('/wswd/api/activities/:id', (req, res) => {
 
     const activity = Activity.findById(req.params.id)
     if (activity) {
@@ -40,7 +42,7 @@ app.get('/api/activities/:id', (req, res) => {
 
 });
 
-app.put('/api/activities/:id', (req, res) => {
+app.put('/wswd/api/activities/:id', (req, res) => {
     Activity.findByIdAndUpdate(req.params.id, req.body, { new: true })
         .then(update => {
             console.log(update)
@@ -49,7 +51,7 @@ app.put('/api/activities/:id', (req, res) => {
         })
 });
 
-app.post('/api/activities', (req, res) => {
+app.post('/wswd/api/activities', (req, res) => {
     const activity = req.body
 
     const newThing = new Activity({ activityType: activity.activityType, name: activity.name })
@@ -63,14 +65,14 @@ app.post('/api/activities', (req, res) => {
         .catch(error => next(error))
 });
 
-app.delete('/api/activities/:id', (request, response, next) => {
+app.delete('/wswd/api/activities/:id', (request, response, next) => {
     Activity.findByIdAndRemove(request.params.id)
         .then(() => {
             response.status(204).end()
         })
         .catch(error => next(error))
 });
-app.get("/api/activities", (req, res) => {
+app.get("/wswd/api/activities", (req, res) => {
     Activity.find({}, function (err, result) {
         if (err) {
             res.send(err);
